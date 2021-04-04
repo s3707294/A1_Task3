@@ -1,16 +1,19 @@
-//Page class
+package dbload;
 
-public class Page{
+import java.util.LinkedList;
 
-  //Create page using linked list
-  LinkedList<btye[][]> entry = new LinkedList<btye[][]>();
+public class Page {
+	
+	//Create page using linked list
+	  LinkedList<Object[]> entry = new LinkedList<Object[]>();
 
-  //consruct a new page
-  public Page(){
-  }
+	  //consruct a new page
+	  public Page(){
+	  }
 
-  //Add an entry to the page
-  public void addEntry(byte[][] e){
-    entry.addLast(e);
-  }
+	  //Add an entry to the page
+	  public void addEntry(Object[] e){
+	    entry.addLast(e);
+	  }
+
 }
