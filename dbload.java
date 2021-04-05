@@ -35,14 +35,16 @@ public class dbload {
 	    //open file that will record number of records in each page
 	    FileWriter writePage = new FileWriter(heapfilePageNum, true);
 	    
-	    //Create the heap and create first page
-	    LinkedList<Page> heap = new LinkedList<Page>();
+	    //Create first page	    
 	    Page currPage = new Page();
 	    pageTotal++;
 
 	    //Open csv data
 	    try {
+	    	//Open record per page file
 	    	BufferedReader br = new BufferedReader(new FileReader(args[2]));
+	    	//open heap file
+	    	BufferedWriter writeHeap = new BufferedWriter(new FileWriter(heapFileName, true));
 	    	
 	    	String line = "";
 	    	//Used to skip the header
@@ -82,8 +84,8 @@ public class dbload {
 	    				recordPage = 0;
 	    				pageTotal++;
 	    				currentPageFree = pageSize;
-	    				//Add page to the heap
-	    				heap.addLast(currPage);
+	    				//Write Page to heap
+	    				currPage.writeToHeap(writeHeap);
 	    				//Create new page
 	    				currPage = new Page();
 	    				//add row to new page
@@ -99,17 +101,13 @@ public class dbload {
 	    		    		
 	    	}
 	    	//close the data file
-	    	br.close();
-	    	//close the file detailing number of records per page
+	    	br.close();	    	
 	    	writePage.close();
+	    	writeHeap.close();
 	    }catch(IOException e) {
 	    	e.printStackTrace();
 	    }
-	    
-	    //Write the heap to file
-	    
-	    writeHeap(heap, heapFileName);
-	    
+	    	    
 	    //end the timing	    
 	    long end = System.nanoTime();
 	    
@@ -193,23 +191,6 @@ public class dbload {
 			 bytes += dataEntry[col[i]].getBytes().length;
 		 }		 
 		 return bytes;
-	 }
-	 
-	 //Writes each page into the heap file
-	 public static void writeHeap(LinkedList<Page> heap, String fileName) {
-		 
-		 //open the file
-		 try { 
-			 BufferedWriter writeHeap = new BufferedWriter(new FileWriter(fileName, true));
-			 
-			 //loop through each page of the heap
-			 for(Page p : heap) {
-				 p.writeToHeap(writeHeap);
-			 }
-			 writeHeap.close();
-		 }catch(IOException e) {
-			 e.printStackTrace();
-		 }
-	 }
-	 
+	 } 
+	 	 
 }
